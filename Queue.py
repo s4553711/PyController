@@ -61,8 +61,8 @@ class Queue(object):
 						break
 					if out != '':
 						print "Debug > ",str(out).strip()
-						logHandle.write(out)
-						logHandle.flush()
+						TasklogHandle.write(out)
+						TasklogHandle.flush()
 						sys.stdout.flush()
 
 				p.communicate()
