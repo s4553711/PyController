@@ -64,8 +64,6 @@ class Bowtie(Queue.Queue):
 		print "Debug > ref: ",self.bowtie_ref
 	
 	def run(self):
-		return
-
 		com_ar = ["tophat","-g","1","-p",str(self.thread),self.bowtie_ref,",".join(self.fastq_reads[0]),",".join(self.fastq_reads[1])]
 		#com_ar = ["/home/s4553711/work/tophat/bin/tophat","-g","1","-p",str(self.thread),self.bowtie_ref,reada,readb]
 		print "Argument> ",com_ar
