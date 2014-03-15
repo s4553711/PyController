@@ -10,6 +10,10 @@ class Queue(object):
 		self.prevStateLog = ''
 		self.currentStateLog = ''
 		self.taskLog = ''
+		self.logFolder = ''
+
+	def setLogFolder(self,input):
+		self.logFolder = input
 		
 	def setTaskLog(self,input):
 		self.taskLog = input
@@ -36,8 +40,8 @@ class Queue(object):
 	def run_check(self):
 		status = True
 		for file in os.listdir('.'):
-			if fnmatch.fnmatch(file,self.prevStateLog):
-				state = self.checkStatus(file)
+			if fnmatch.fnmatch(file,os.path.basename(self.prevStateLog)):
+				state = self.checkStatus(self.logFolder+"/"+file)
 				if state == "error": 
 					status = False
 					return status
