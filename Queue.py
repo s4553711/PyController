@@ -46,6 +46,7 @@ class Queue(object):
 	def go_by_cmd(self,input_ar):
 		logHandle = open(self.currentStateLog, "w+")
 		logHandle.write("[hipipe] start\n")
+		logHandle.flush()
 		
 		runCheckResult = self.run_check()
 		print "Debug> Run Check for ",self.step_name," : ",runCheckResult
@@ -88,6 +89,7 @@ class Queue(object):
 	def go(self):
 		logHandle = open(self.currentStateLog, "w+")
 		logHandle.write("[hipipe] start\n")
+		logHandle.flush()
 		
 		runCheckResult = self.run_check()
 		print "Debug> Run Check for ",self.step_name," : ",runCheckResult
