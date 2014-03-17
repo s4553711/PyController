@@ -3,6 +3,9 @@ import Alignment
 import os
 import Queue
 import Jobs
+import sys
+
+print sys.argv[1]
 
 print "Log> Job Start"
 job1 = Jobs.job1()

@@ -39,10 +39,10 @@ class Queue(object):
 	
 	def run_check(self):
 		status = True
-		for file in os.listdir('.'):
+		for file in os.listdir(self.logFolder):
 			if fnmatch.fnmatch(file,os.path.basename(self.prevStateLog)):
 				state = self.checkStatus(self.logFolder+"/"+file)
-				if state == "error": 
+				if state == "error" or state == "stop": 
 					status = False
 					return status
 		return status
@@ -102,8 +102,10 @@ class Queue(object):
 			self.run()
 		else:
 			logHandle.write("[hipipe] stop\n")
+			logHandle.flush()
 			logHandle.close()
 			return
 		
 		logHandle.write("[hipipe] end\n")
+		logHandle.flush()
 		logHandle.close()
