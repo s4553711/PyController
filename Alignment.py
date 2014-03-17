@@ -17,6 +17,10 @@ class Bowtie(Queue.Queue):
 		self.fastq_reads = [[],[]]
 		self.thread = 1
 		self.stopSignal = 0
+		self.SampleName = ""
+ 
+	def setSampleName(self,input):
+		self.SampleName = input
 
 	def getFastqFromFolder(self,input):
 		zip_files = [f for f in os.listdir(input) if f.endswith('.gz')]
