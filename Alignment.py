@@ -3,9 +3,9 @@ import sys
 import os
 import re
 import shutil
-import Queue
+import task
 
-class Bowtie(Queue.Queue):
+class Bowtie(task.taskDef):
 	def __init__(self):
 		super(Bowtie, self).__init__()
 		self.debug = 0

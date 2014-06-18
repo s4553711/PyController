@@ -1,7 +1,7 @@
 import time
-import Queue
+import task
 
-class job1(Queue.Queue):
+class job1(task.taskDef):
 	def __init__(self):
 		super(job1, self).__init__()
 		

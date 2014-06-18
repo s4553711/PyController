@@ -4,7 +4,7 @@ import re
 import subprocess
 import sys
 
-class Queue(object):
+class taskDef(object):
 	def __init__(self):
 		self.step_name = ""
 		self.prevStateLog = ''
@@ -48,15 +48,14 @@ class Queue(object):
 		return status
 	
 	def go_by_cmd(self,input_ar):
-		logHandle = open(self.currentStateLog, "w+")
+		logHandle = open(self.logFolder+"/"+self.currentStateLog, "w+")
 		logHandle.write("[hipipe] start\n")
 		logHandle.flush()
 		
 		runCheckResult = self.run_check()
-		print "Debug> Run Check for ",self.step_name," : ",runCheckResult
 		
 		if runCheckResult:
-			TasklogHandle = open(self.taskLog, "w+")
+			TasklogHandle = open(self.logFolder+"/"+self.taskLog, "w+")
 			try:
 				p = subprocess.Popen(input_ar,stdin=None ,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,bufsize=1)
 				
@@ -65,23 +64,28 @@ class Queue(object):
 					if out == '' and p.poll() != None:
 						break
 					if out != '':
-						print "Debug > ",str(out).strip()
 						TasklogHandle.write(out)
 						TasklogHandle.flush()
 						sys.stdout.flush()
 
 				p.communicate()
+				if p.poll() >= 1:
+					logHandle.write("[hipipe] error\n")
+					logHandle.close()
+					return
+				
 			except OSError as e:
 				print "OSError > ",e.errno
 				print "OSError > ",e.strerror
 				print "OSError > ",e.filename
+				logHandle.write("[hipipe] error\n")
 			except Exception as ins:
 				print "ERROR > ",sys.exc_info()
 				print "ERROR > ",type(ins)
 				print "ERROR > ",ins.args
+				logHandle.write("[hipipe] error\n")
 				
 			TasklogHandle.close()
-			print "Debug > Finish"
 		else:
 			logHandle.write("[hipipe] stop\n")
 			logHandle.close()
@@ -91,12 +95,11 @@ class Queue(object):
 		logHandle.close()
 	
 	def go(self):
-		logHandle = open(self.currentStateLog, "w+")
+		logHandle = open(self.logFolder+"/"+self.currentStateLog, "w+")
 		logHandle.write("[hipipe] start\n")
 		logHandle.flush()
 		
 		runCheckResult = self.run_check()
-		print "Debug> Run Check for ",self.step_name," : ",runCheckResult
 		
 		if runCheckResult:
 			self.run()
