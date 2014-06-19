@@ -14,6 +14,11 @@ class taskDef(object):
 
 	def setLogFolder(self,input):
 		self.logFolder = input
+		if not os.path.isdir(self.logFolder):
+			os.makedirs(self.logFolder)
+		
+	def getLogFolder(self):
+		return self.logFolder
 		
 	def setTaskLog(self,input):
 		self.taskLog = input
@@ -39,23 +44,23 @@ class taskDef(object):
 	
 	def run_check(self):
 		status = True
-		for file in os.listdir(self.logFolder):
+		for file in os.listdir(self.getLogFolder()):
 			if fnmatch.fnmatch(file,os.path.basename(self.prevStateLog)):
-				state = self.checkStatus(self.logFolder+"/"+file)
+				state = self.checkStatus(self.getLogFolder()+"/"+file)
 				if state == "error" or state == "stop": 
 					status = False
 					return status
 		return status
 	
 	def go_by_cmd(self,input_ar):
-		logHandle = open(self.logFolder+"/"+self.currentStateLog, "w+")
+		logHandle = open(self.getLogFolder()+"/"+self.currentStateLog, "w+")
 		logHandle.write("[hipipe] start\n")
 		logHandle.flush()
 		
 		runCheckResult = self.run_check()
 		
 		if runCheckResult:
-			TasklogHandle = open(self.logFolder+"/"+self.taskLog, "w+")
+			TasklogHandle = open(self.getLogFolder()+"/"+self.taskLog, "w+")
 			try:
 				p = subprocess.Popen(input_ar,stdin=None ,stdout=subprocess.PIPE,stderr=subprocess.STDOUT,bufsize=1)
 				
@@ -95,7 +100,7 @@ class taskDef(object):
 		logHandle.close()
 	
 	def go(self):
-		logHandle = open(self.logFolder+"/"+self.currentStateLog, "w+")
+		logHandle = open(self.getLogFolder()+"/"+self.currentStateLog, "w+")
 		logHandle.write("[hipipe] start\n")
 		logHandle.flush()
 		
